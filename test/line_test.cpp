@@ -1,5 +1,5 @@
 #include <iostream>
-#include "line.hpp"
+#include "../line.hpp"
 #include <cassert>
 
 using namespace std;
@@ -78,6 +78,23 @@ void test_vertical_non_vertical()
     assert( isValid = true );
     assert( result == MINUS_INFINITY);
 
+    cout<< l1 << endl;
+
+}
+
+void test_vertical_non_vertical2()
+{
+    LineSegment l1( 0, 0, -1, -1, true);
+    LineSegment l2( 0, 0, 1, 1, true);
+    LineSegment l3( 1, -1, -1, 1, false);
+    LineSegment l4( -1, 1, -1, 1, false);
+
+    bool isValid;
+    float result;
+
+    isValid = l3.intersects( l1, result );
+
+    assert( isValid == true );
 }
 
 int main()
@@ -90,6 +107,8 @@ int main()
     test_parallel();
     cout<<"vertical non-vertical"<<endl;
     test_vertical_non_vertical();
+    cout<<"vnv2"<<endl;
+    test_vertical_non_vertical2();
 
     cout<<endl;
     cout<< "passed all tests :) "<< endl;

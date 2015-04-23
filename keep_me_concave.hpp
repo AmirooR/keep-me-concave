@@ -2,13 +2,15 @@
 
 #include "line.hpp"
 #include <vector>
+#include <iostream>
+
 
 using namespace std;
 
 
 class KeepMeConcave
 {
-        vector<LineSegment&> segments;
+        vector<LineSegment> segments;
         float lambda_min;
         float lambda_max;
         float min_lambda_min; // value at lambda_min
@@ -17,6 +19,7 @@ class KeepMeConcave
         
         KeepMeConcave( float lambda_min_, float lambda_max_):lambda_min(lambda_min_),lambda_max(lambda_max_), min_lambda_min(-MINUS_INFINITY), min_lambda_max(-MINUS_INFINITY)
         {
+            assert( lambda_min < lambda_max );
             LineSegment l1( 0, 0, lambda_min, lambda_min, true );
             LineSegment l2( 0, 0, lambda_max, lambda_max, true );
 
@@ -24,7 +27,7 @@ class KeepMeConcave
             segments.push_back(l2);
         }
 
-        vector<LineSegment&> getSegments()
+        vector<LineSegment> getSegments() const
         {
             return segments;
         }
@@ -38,16 +41,22 @@ class KeepMeConcave
             {
                 float result;
                 bool isValid;
-                if( l1.isTheSame( segements[i] ) ) //Two same lines doesn't need to be checked, TODO check this
+                if( l1.isTheSame( segments[i] ) ) //Two same lines doesn't need to be checked, TODO check this
+                {
+                    cerr<<"Two same Lines"<<endl;
                     return;
+                }
                 isValid = l1.intersects( segments[i], result );
                 if( isValid )
                 {
+                    cerr<<"Valid intersection: @lambda = "<<result<<endl;
                     if( result == lambda_min) // intersects at lambda_min
                     {
                         l1.evaluate( lambda_min, result );
+                        cerr<< "min_lambda_min: " << min_lambda_min << endl;
                         if( result <= min_lambda_min ) // it is smaller than the current value. So, we should choose it
                         {
+                            cerr<<"result <= min_lambda_min"<<endl;
                             intersecting_lambda[num_intersections] = lambda_min;
                             intersecting_energies[num_intersections] = result;
                             intersecting_indexes[num_intersections] = i;
@@ -58,8 +67,10 @@ class KeepMeConcave
                     else if( result == lambda_max) // intersects at lambda_max
                     {
                         l1.evaluate( lambda_max, result );
+                        cerr<< "min_lambda_max: "<<min_lambda_max << endl;
                         if( result <= min_lambda_max ) // smaller than the current value. So, we should choose it
                         {
+                            cerr << "result <= min_lambda_max"<<endl;
                             intersecting_lambda[num_intersections] = lambda_max;
                             intersecting_energies[num_intersections] = result;
                             intersecting_indexes[num_intersections] = i;
@@ -72,7 +83,7 @@ class KeepMeConcave
                         float intersecting_energy;                       
                         l1.evaluate( result, intersecting_energy );
                         intersecting_lambda[num_intersections] = result;
-                        intersecting_energy[num_intersections] = intersecting_energy;
+                        intersecting_energies[num_intersections] = intersecting_energy;
                         intersecting_indexes[num_intersections] = i;
                         num_intersections++;
                     }
@@ -80,7 +91,7 @@ class KeepMeConcave
             }
 
             // Intersections are found. Now, remove the line segments above and add the new line segment
-            if( num_intersections > 1 )
+            if( num_intersections > 1 && (intersecting_lambda[0] != intersecting_lambda[num_intersections -1]))//TODO check assuming no vertical line will be created
             { // find two unique intersecting points ( since I keep it sorted, the first and last indexes are OK )
                 segments[ intersecting_indexes[0] ].lambda_max = intersecting_lambda[0];
                 segments[ intersecting_indexes[ num_intersections - 1]].lambda_min = intersecting_lambda[ num_intersections - 1];
@@ -100,5 +111,14 @@ class KeepMeConcave
                                           // at a single point (left, right line segments) TODO check this
         float intersecting_energies[4];
         int intersecting_indexes[4];
-
+        friend ostream& operator<<(ostream& os, const KeepMeConcave& k);
 };
+
+ostream& operator<<(ostream& os, const KeepMeConcave& k)
+{
+    vector<LineSegment> segments = k.getSegments();
+    for(size_t i = 0; i < segments.size(); i++)
+        cout<< segments[i] << endl;
+    return os;
+}
+

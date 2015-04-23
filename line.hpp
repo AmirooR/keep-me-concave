@@ -6,6 +6,7 @@
 #define MIN(X,Y) ( (X)>(Y)?(Y):(X) )
 
 #include <cassert>
+#include <iostream>
 using namespace std;
 
 typedef struct LineSegment
@@ -51,6 +52,23 @@ typedef struct LineSegment
             else
                 return false;
         }
+
+        if(line.isVertical)
+        {
+            result_lambda = line.lambda_min;
+            if( result_lambda >= lambda_min && result_lambda <= lambda_max )
+                return true;
+            else return false;
+        }
+        
+        if(isVertical)
+        {
+            result_lambda = lambda_min;
+            if( result_lambda >= line.lambda_min && result_lambda <= line.lambda_max )
+                return true;
+            else return false;
+        }
+
         if(line.m == m)
         {
             if(line.b == b)
@@ -72,9 +90,18 @@ typedef struct LineSegment
             return true;
         else return false;
     }
+
+    friend ostream& operator<<(ostream& os, const LineSegment& l);
 }LineSegment;
 
 bool intersects(LineSegment& l1, LineSegment& l2, float& result)
 {
     return l1.intersects( l2, result);
+}
+
+
+ostream& operator<<(ostream& os, const LineSegment& l)
+{
+    os << l.m << " "<< l.b << " " << l.lambda_min << " " << l.lambda_max << " " << l.isVertical;
+    return os;
 }
