@@ -22,7 +22,7 @@ typedef struct LineSegment
     }
 
     bool evaluate(float lambda, float& result)
-    {//TODO: test
+    {
         if(isVertical)
         {
             result = MINUS_INFINITY;
@@ -34,6 +34,11 @@ typedef struct LineSegment
 
         result = m*lambda+b;
         return (lambda >= lambda_min && lambda <= lambda_max)?true:false;
+    }
+
+    bool isTheSame(LineSegment& line)
+    {
+        return (b == line.b) && (m == line.m);
     }
 
     bool intersects(LineSegment& line, float& result_lambda)
@@ -49,7 +54,7 @@ typedef struct LineSegment
         if(line.m == m)
         {
             if(line.b == b)
-            {//two identical lines,TODO check if this happens!
+            {//two identical lines
                 result_lambda = lambda_min;
                 return true;
             }
