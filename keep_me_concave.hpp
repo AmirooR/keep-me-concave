@@ -43,20 +43,20 @@ class KeepMeConcave
                 bool isValid;
                 if( l1.isTheSame( segments[i] ) ) //Two same lines doesn't need to be checked, TODO check this
                 {
-                    cerr<<"Two same Lines"<<endl;
+                    //cerr<<"Two same Lines"<<endl;
                     return;
                 }
                 isValid = l1.intersects( segments[i], result );
                 if( isValid )
                 {
-                    cerr<<"Valid intersection: @lambda = "<<result<<endl;
+                    //cerr<<"Valid intersection: @lambda = "<<result<<endl;
                     if( result == lambda_min) // intersects at lambda_min
                     {
                         l1.evaluate( lambda_min, result );
-                        cerr<< "min_lambda_min: " << min_lambda_min << endl;
+                        //cerr<< "min_lambda_min: " << min_lambda_min << endl;
                         if( result <= min_lambda_min ) // it is smaller than the current value. So, we should choose it
                         {
-                            cerr<<"result <= min_lambda_min"<<endl;
+                            //cerr<<"result <= min_lambda_min"<<endl;
                             intersecting_lambda[num_intersections] = lambda_min;
                             intersecting_energies[num_intersections] = result;
                             intersecting_indexes[num_intersections] = i;
@@ -67,10 +67,10 @@ class KeepMeConcave
                     else if( result == lambda_max) // intersects at lambda_max
                     {
                         l1.evaluate( lambda_max, result );
-                        cerr<< "min_lambda_max: "<<min_lambda_max << endl;
+                        //cerr<< "min_lambda_max: "<<min_lambda_max << endl;
                         if( result <= min_lambda_max ) // smaller than the current value. So, we should choose it
                         {
-                            cerr << "result <= min_lambda_max"<<endl;
+                            //cerr << "result <= min_lambda_max"<<endl;
                             intersecting_lambda[num_intersections] = lambda_max;
                             intersecting_energies[num_intersections] = result;
                             intersecting_indexes[num_intersections] = i;
