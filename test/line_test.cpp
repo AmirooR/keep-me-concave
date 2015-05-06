@@ -8,7 +8,7 @@ void test_simple()
 {
     LineSegment l1(-1, 1, 0, 1, false);
     LineSegment l2(1, 0, 0, 2, false);
-    float result;
+    double result;
     bool isValid;
 
     isValid = l1.evaluate( 0.5, result);
@@ -28,7 +28,7 @@ void test_non_overlapping()
 {
     LineSegment l1(-1, 1, 0, 1, false);
     LineSegment l2(1, 0, 3, 4, false);
-    float result;
+    double result;
     bool isValid;
 
     isValid = l1.intersects(l2, result);
@@ -41,7 +41,7 @@ void test_parallel()
 {
     LineSegment l1(1, 1, 0, 1, false);
     LineSegment l2(1, 0, 0, 1, false);
-    float result;
+    double result;
     bool isValid;
 
     isValid = l1.intersects(l2, result);
@@ -60,7 +60,7 @@ void test_vertical_non_vertical()
 {
     LineSegment l1(1, 1, 0, 0, true);
     LineSegment l2(-1, 1, 0, 1, false);
-    float result;
+    double result;
     bool isValid;
 
     isValid = l1.intersects(l2, result);
@@ -90,7 +90,7 @@ void test_vertical_non_vertical2()
     LineSegment l4( -1, 1, -1, 1, false);
 
     bool isValid;
-    float result;
+    double result;
 
     isValid = l3.intersects( l1, result );
 

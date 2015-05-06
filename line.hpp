@@ -11,18 +11,18 @@ using namespace std;
 
 typedef struct LineSegment
 {
-    float m;
-    float b;
-    float lambda_min;
-    float lambda_max;
+    double m;
+    double b;
+    double lambda_min;
+    double lambda_max;
     bool isVertical;
 
-    LineSegment(float m_, float b_, float lambda_min_, float lambda_max_, bool isVertical_ = false):m(m_),b(b_),lambda_min(lambda_min_), lambda_max(lambda_max_), isVertical(isVertical_)
+    LineSegment(double m_, double b_, double lambda_min_, double lambda_max_, bool isVertical_ = false):m(m_),b(b_),lambda_min(lambda_min_), lambda_max(lambda_max_), isVertical(isVertical_)
     {
         assert( lambda_min <= lambda_max );
     }
 
-    bool evaluate(float lambda, float& result)
+    bool evaluate(double lambda, double& result)
     {
         if(isVertical)
         {
@@ -42,7 +42,7 @@ typedef struct LineSegment
         return (b == line.b) && (m == line.m);
     }
 
-    bool intersects(LineSegment& line, float& result_lambda)
+    bool intersects(LineSegment& line, double& result_lambda)
     {
         if(isVertical && line.isVertical )
         {
@@ -84,8 +84,8 @@ typedef struct LineSegment
         }
 
         result_lambda = ( line.b - b) / (m - line.m);
-        float intersect_min_lambda = MAX( lambda_min, line.lambda_min );
-        float intersect_max_lambda = MIN( lambda_max, line.lambda_max );
+        double intersect_min_lambda = MAX( lambda_min, line.lambda_min );
+        double intersect_max_lambda = MIN( lambda_max, line.lambda_max );
         if( result_lambda >= intersect_min_lambda && result_lambda <= intersect_max_lambda)
             return true;
         else return false;
@@ -94,7 +94,7 @@ typedef struct LineSegment
     friend ostream& operator<<(ostream& os, const LineSegment& l);
 }LineSegment;
 
-bool intersects(LineSegment& l1, LineSegment& l2, float& result)
+bool intersects(LineSegment& l1, LineSegment& l2, double& result)
 {
     return l1.intersects( l2, result);
 }

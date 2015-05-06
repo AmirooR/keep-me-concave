@@ -11,13 +11,13 @@ using namespace std;
 class KeepMeConcave
 {
         vector<LineSegment> segments;
-        float lambda_min;
-        float lambda_max;
-        float min_lambda_min; // value at lambda_min
-        float min_lambda_max; // value at lambda_max
+        double lambda_min;
+        double lambda_max;
+        double min_lambda_min; // value at lambda_min
+        double min_lambda_max; // value at lambda_max
     public:
         
-        KeepMeConcave( float lambda_min_, float lambda_max_):lambda_min(lambda_min_),lambda_max(lambda_max_), min_lambda_min(-MINUS_INFINITY), min_lambda_max(-MINUS_INFINITY)
+        KeepMeConcave( double lambda_min_, double lambda_max_):lambda_min(lambda_min_),lambda_max(lambda_max_), min_lambda_min(-MINUS_INFINITY), min_lambda_max(-MINUS_INFINITY)
         {
             assert( lambda_min < lambda_max );
             LineSegment l1( 0, 0, lambda_min, lambda_min, true );
@@ -39,7 +39,7 @@ class KeepMeConcave
             // find intersections
             for(size_t i = 0; i < segments.size(); i++)
             {
-                float result;
+                double result;
                 bool isValid;
                 if( l1.isTheSame( segments[i] ) ) //Two same lines doesn't need to be checked, TODO check this
                 {
@@ -80,7 +80,7 @@ class KeepMeConcave
                     }
                     else // intersects with other lines
                     { 
-                        float intersecting_energy;                       
+                        double intersecting_energy;                       
                         l1.evaluate( result, intersecting_energy );
                         intersecting_lambda[num_intersections] = result;
                         intersecting_energies[num_intersections] = intersecting_energy;
@@ -106,10 +106,10 @@ class KeepMeConcave
     public: //These for variables might be needed from outside :-/ 
         int num_intersections;
 
-        float intersecting_lambda[4]; // it should be two points, but some times it passes through the
+        double intersecting_lambda[4]; // it should be two points, but some times it passes through the
                                           // vertex of the concave function. So, two intersections can be found 
                                           // at a single point (left, right line segments) TODO check this
-        float intersecting_energies[4];
+        double intersecting_energies[4];
         int intersecting_indexes[4];
         friend ostream& operator<<(ostream& os, const KeepMeConcave& k);
 };
