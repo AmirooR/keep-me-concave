@@ -118,7 +118,7 @@ ostream& operator<<(ostream& os, const KeepMeConcave& k)
 {
     vector<LineSegment> segments = k.getSegments();
     for(size_t i = 0; i < segments.size(); i++)
-        cout<< segments[i] << endl;
+        os<< segments[i] << endl;
     return os;
 }
 
