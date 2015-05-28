@@ -39,7 +39,7 @@ typedef struct LineSegment
 
     bool isTheSame(LineSegment& line)
     {
-        return (b == line.b) && (m == line.m);
+        return (b == line.b) && (m == line.m) && (isVertical == line.isVertical);
     }
 
     bool intersects(LineSegment& line, double& result_lambda)
